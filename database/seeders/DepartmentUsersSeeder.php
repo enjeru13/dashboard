@@ -19,10 +19,11 @@ class DepartmentUsersSeeder extends Seeder
             'Compras' => 'compras@gmail.com',
             'Mercadeo' => 'mercadeo@gmail.com',
             'Recursos Humanos' => 'rrhh@gmail.com',
+            'Operaciones BQ' => 'operacionesbq@gmail.com',
         ];
 
         foreach ($departments as $deptName => $email) {
-            $user = User::firstOrCreate(
+            $user = User::updateOrCreate(
                 ['email' => $email],
                 [
                     'name' => "Usuario $deptName",
@@ -32,12 +33,7 @@ class DepartmentUsersSeeder extends Seeder
                 ]
             );
 
-            if ($user->department !== $deptName) {
-                $user->department = $deptName;
-                $user->save();
-            }
-
-            $this->command->info("Usuario creado/actualizado para $deptName: $email");
+            $this->command->info("Usuario sincronizado para $deptName: $email");
         }
     }
 }

@@ -23,27 +23,33 @@ class ProjectsSeeder extends Seeder
             'Operaciones',
             'Compras',
             'Mercadeo',
-            'Recursos Humanos'
+            'Recursos Humanos',
+            'Operaciones BQ' // Agregado
         ];
 
-        if (!User::where('email', 'admin@gmail.com')->exists()) {
-            User::factory()->create([
+        // Crear o actualizar el Admin
+        User::updateOrCreate(
+            ['email' => 'admin@gmail.com'],
+            [
                 'name' => 'Admin User',
-                'email' => 'admin@gmail.com',
                 'password' => Hash::make('password'),
                 'department' => 'Tecnologia',
                 'is_admin' => true
-            ]);
-        }
+            ]
+        );
 
         foreach ($departments as $dept) {
-            Project::create([
-                'name' => "Proyecto Demo $dept",
-                'description' => "Descripción del proyecto para $dept.",
-                'department' => $dept,
-                'url' => 'https://example.com',
-                'icon' => substr($dept, 0, 2),
-            ]);
+            Project::updateOrCreate(
+                ['name' => "Proyecto Demo $dept"], // Busca por nombre para no duplicar
+                [
+                    'description' => "Descripción del proyecto para $dept.",
+                    'department' => $dept,
+                    'url' => 'https://example.com',
+                    'icon' => substr($dept, 0, 2),
+                ]
+            );
         }
+
+        $this->command->info("Proyectos sincronizados correctamente.");
     }
 }

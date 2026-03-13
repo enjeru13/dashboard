@@ -17,6 +17,13 @@ import { type NavItem } from '@/types';
 
 import AppLogo from './app-logo';
 
+function slugify(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^\w ]+/g, '')
+        .replace(/ +/g, '-');
+}
+
 const mainNavItems: NavItem[] = [
     {
         title: 'Dashboard',
@@ -47,7 +54,7 @@ export function AppSidebar({ departments = [] }: { departments?: string[] }) {
                         name="Departamentos"
                         items={departments.map(dept => ({
                             title: dept,
-                            href: window.location.pathname === dashboard().url ? `#${dept}` : `${dashboard().url}#${dept}`,
+                            href: window.location.pathname === dashboard().url ? `#${slugify(dept)}` : `${dashboard().url}#${slugify(dept)}`,
                             icon: Folder,
                         }))}
                     />

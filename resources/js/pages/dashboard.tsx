@@ -19,6 +19,13 @@ interface DashboardProps {
     projects: Record<string, Project[]>;
 }
 
+function slugify(text: string): string {
+    return text
+        .toLowerCase()
+        .replace(/[^\w ]+/g, '')
+        .replace(/ +/g, '-');
+}
+
 export default function Dashboard({ projects }: DashboardProps) {
     const { auth } = usePage<SharedData>().props;
     const [searchQuery, setSearchQuery] = useState('');
@@ -69,7 +76,7 @@ export default function Dashboard({ projects }: DashboardProps) {
                             <div key={groupName} className="mb-8 last:mb-0">
                                 {groupName && groupName !== "" && (
                                     <h2
-                                        id={groupName}
+                                        id={slugify(groupName)}
                                         className="text-2xl font-bold tracking-tight mb-4 flex items-center gap-2 scroll-mt-20"
                                     >
                                         <span className="w-1 h-6 bg-primary rounded-full inline-block"></span>
